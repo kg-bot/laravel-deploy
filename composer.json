@@ -1,0 +1,32 @@
+{
+  "name": "kg-bot/laravel-deploy",
+  "description": "Laravel package used to automatically deploy code from GIT version controls",
+  "require": {
+    "php": ">=7.1",
+    "laravel/framework": "5.*"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stefan Ninic",
+      "email": "ninicstefan94@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "KgBot\\LaravelDeploy": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "KgBot\\LaravelDeploy\\LaravelDeployServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
