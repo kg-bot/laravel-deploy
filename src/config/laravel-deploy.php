@@ -11,8 +11,10 @@ return [
     'routes' => [
 
         'prefix'     => env( 'LARAVEL_DEPLOY_PREFIX', 'laravel-deploy' ),
-        'middleware' => explode( ',', env( 'LARAVEL_DEPLOY_MIDDLEWARE', '' ) ),
-    ],
+        'middleware' => ( env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) ) ? explode( ',', env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) )
+            : [],
+    ]
+    ,
     'events' => [
 
         'channel' => env( 'LARAVEL_DEPLOY_EVENTS_CHANNEL', '' ),
