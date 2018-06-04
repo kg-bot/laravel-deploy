@@ -15,5 +15,5 @@ Route::group( [
 
 ], function () {
 
-    Route::get( 'deploy', 'DeployController@request' )->name( 'laravel-deploy.deploy.request' );
+    Route::any( 'deploy', 'DeployController@request' )->name( 'laravel-deploy.deploy.request' );
 } );
