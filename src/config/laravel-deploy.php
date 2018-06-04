@@ -8,15 +8,17 @@
 
 return [
 
-    'routes' => [
+    'routes'     => [
 
         'prefix'     => env( 'LARAVEL_DEPLOY_PREFIX', 'laravel-deploy' ),
         'middleware' => ( env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) ) ? explode( ',', env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) )
             : [],
     ]
     ,
-    'events' => [
+    'events'     => [
 
         'channel' => env( 'LARAVEL_DEPLOY_EVENTS_CHANNEL', '' ),
     ],
+    'queue'      => env( 'LARAVEL_DEPLOY_QUEUE', 'default' ),
+    'run_deploy' => env( 'LARAVEL_DEPLOY_RUN', true ),
 ];

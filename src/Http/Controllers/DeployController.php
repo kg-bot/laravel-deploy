@@ -9,36 +9,34 @@
 namespace KgBot\LaravelDeploy\Http\Controllers;
 
 
+use App\Jobs\DeployJob;
 use Illuminate\Http\Request;
-use KgBot\LaravelDeploy\Events\LaravelDeployFinished;
-use KgBot\LaravelDeploy\Events\LaravelDeployStarted;
 use KgBot\LaravelDeploy\Exceptions\UnableToReadScriptFile;
 use KgBot\LaravelDeploy\Models\DeploySource;
-use Symfony\Component\Process\Process;
 
 class DeployController extends BaseController
 {
     public function request( Request $request )
     {
-        $client = DeploySource::where( [
+        if ( config( 'laravel-deploy.run_deploy' ) ) {
 
-            [ 'token', $request->get( '_token' ) ],
-            [ 'active', true ],
-        ] )->first();
+            $client = DeploySource::where( [
 
-        $filename    = $client->script_source;
-        $script_file = base_path( $filename );
+                [ 'token', $request->get( '_token' ) ],
+                [ 'active', true ],
+            ] )->first();
 
-        if ( !file_exists( $script_file ) ) {
+            $filename    = $client->script_source;
+            $script_file = base_path( $filename );
 
-            throw new UnableToReadScriptFile();
+            if ( !file_exists( $script_file ) ) {
 
+                throw new UnableToReadScriptFile();
+
+            }
+
+            dispatch( new DeployJob( $client, $script_file ) )->onQueue( config( 'laravel-deploy.queue', 'default' ) );
         }
-
-        $process = new Process( 'sh ' . $script_file );
-        event( new LaravelDeployStarted( $client ) );
-        $process->start();
-        event( new LaravelDeployFinished( $client ) );
 
         return response()->json( 'success' );
     }
