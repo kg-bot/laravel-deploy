@@ -8,10 +8,9 @@
 
 namespace KgBot\LaravelDeploy\Http\Controllers;
 
-
-use App\Jobs\DeployJob;
 use Illuminate\Http\Request;
 use KgBot\LaravelDeploy\Exceptions\UnableToReadScriptFile;
+use KgBot\LaravelDeploy\Jobs\DeployJob;
 use KgBot\LaravelDeploy\Models\DeploySource;
 
 class DeployController extends BaseController
