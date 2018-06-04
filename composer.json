@@ -5,6 +5,14 @@
     "php": ">=7.1",
     "laravel/framework": "5.*"
   },
+  "keywords": [
+    "laravel",
+    "deploy",
+    "github",
+    "bitbucket",
+    "git",
+    "vcs"
+  ],
   "license": "MIT",
   "authors": [
     {
