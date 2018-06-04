@@ -141,7 +141,7 @@ This package exposes some routes (only one for now but there will be more of the
 
 Let's say that your repository is located at [https://github.com/kg-bot/laravel-deploy], you would go to [https://github.com/kg-bot/laravel-deploy/settings/hooks/new].  
 
-There you will get screen like this [http://prntscr.com/jqrg7w]  
+There you will get screen like this ![GitHub Webhook Create](https://i.imgur.com/CZ2qx4u.png)  
 
 In the Payload URL you need to enter webhook URL which *must* be [http://example.com/laravel-deploy/deploy+_token=#####################] (it can be http or https, depend's on your server SSL settings), where `example.com` should be your domain and `laravel-deploy` should be the prefix you set in configuration, also the token part needs to match hashed value you got when creating new client.  
 
@@ -153,7 +153,7 @@ Everything is same as GitHub except links and field names.
 
 Link to create new webhook should be [https://bitbucket.org/:USERNAME:/:REPO:/admin/addon/admin/bitbucket-webhooks/bb-webhooks-repo-admin]  
 
-It looks like this [http://prntscr.com/jqrjko], Title can be anything, URL should be same as in GitHub settings, you must check Active and you can check Skip certificate verification for now (until next versions)
+It looks like this ![BitBucket Webhook Create](https://i.imgur.com/5Zw4Obl.png), Title can be anything, URL should be same as in GitHub settings, you must check Active and you can check Skip certificate verification for now (until next versions)
 
 ## Proposals, comments, feedback
 
