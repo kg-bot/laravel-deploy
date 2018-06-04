@@ -25,7 +25,7 @@ class CreateDeploySourcesTable extends Migration
 
             $table->string( 'source' );
             $table->boolean( 'active' )->default( true );
-            $table->text( 'token' )->unique();
+            $table->string( 'token', 512 )->unique();
             $table->string( 'name' );
             $table->string( 'script_source' );
         } );
