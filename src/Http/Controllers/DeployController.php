@@ -18,7 +18,7 @@ use Symfony\Component\Process\Process;
 
 class DeployController extends BaseController
 {
-    public function deploy( Request $request )
+    public function request( Request $request )
     {
         $client = DeploySource::where( [
 
