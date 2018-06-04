@@ -40,7 +40,11 @@ class DeployJob implements ShouldQueue
      */
     public function handle()
     {
-        $process = new Process( 'sh ' . $this->script_file );
+        $command = 'echo ' . config( 'laravel-deploy.user.password' );
+        $command .= ' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
+        $command .= ' sh ' . $this->script_file;
+
+        $process = new Process( $command );
         event( new LaravelDeployStarted( $this->client ) );
         $process->start();
         event( new LaravelDeployFinished( $this->client ) );

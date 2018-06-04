@@ -21,4 +21,9 @@ return [
     ],
     'queue'      => env( 'LARAVEL_DEPLOY_QUEUE', 'default' ),
     'run_deploy' => env( 'LARAVEL_DEPLOY_RUN', true ),
+    'user'       => [
+
+        'username' => env( 'LARAVEL_DEPLOY_USERNAME', 'www-data' ),
+        'password' => env( 'LARAVEL_DEPLOY_PASSWORD', '' ),
+    ],
 ];
