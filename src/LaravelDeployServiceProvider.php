@@ -27,7 +27,7 @@ class LaravelDeployServiceProvider extends ServiceProvider
             ] );
         }
 
-        $this->loadRoutesFrom( __DIR__ . '/../../routes.php' );
+        $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
 
         $this->publishes( [
             __DIR__ . '/../config/laravel-deploy.php' => config_path( 'laravel-deploy.php' ),
