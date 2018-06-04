@@ -30,11 +30,11 @@ class LaravelDeployServiceProvider extends ServiceProvider
         $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
 
         $this->publishes( [
-            __DIR__ . '/../config/laravel-deploy.php' => config_path( 'laravel-deploy.php' ),
+            __DIR__ . '/config/laravel-deploy.php' => config_path( 'laravel-deploy.php' ),
         ], 'config' );
 
         $this->publishes( [
-            __DIR__ . '/../database/migrations/' => database_path( 'migrations' ),
+            __DIR__ . '/database/migrations/' => database_path( 'migrations' ),
         ], 'migrations' );
     }
 }
