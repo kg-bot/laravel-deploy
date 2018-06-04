@@ -46,7 +46,16 @@ class DeployJob implements ShouldQueue
 
         $process = new Process( $command );
         event( new LaravelDeployStarted( $this->client ) );
-        $process->start();
+        $process->run();
+        try {
+
+            \Log::info( $process->getOutput() );
+
+        } catch ( \Exception $exception ) {
+
+            \Log::critical( 'Can\'t get deploy process output.' );
+        }
+
         event( new LaravelDeployFinished( $this->client ) );
     }
 }
