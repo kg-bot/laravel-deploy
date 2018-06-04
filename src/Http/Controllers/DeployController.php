@@ -35,7 +35,7 @@ class DeployController extends BaseController
 
         }
 
-        $process = new Process( $script_file );
+        $process = new Process( 'sh ' . $script_file );
         event( new LaravelDeployStarted( $client ) );
         $process->start();
         event( new LaravelDeployFinished( $client ) );
