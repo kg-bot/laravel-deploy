@@ -23,7 +23,6 @@ class DeployController extends BaseController
         $client = DeploySource::where( [
 
             [ 'token', $request->get( '_token' ) ],
-            [ 'source', $request->getHost() ],
             [ 'active', true ],
         ] )->first();
 

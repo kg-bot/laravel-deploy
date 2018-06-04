@@ -33,7 +33,6 @@ class IsValidToken extends Middleware
             $client = DeploySource::where( [
 
                 [ 'token', $token ],
-                [ 'source', $request->getHost() ],
                 [ 'active', true ],
             ] )->first();
 
