@@ -16,7 +16,9 @@ class LaravelDeployServiceProvider extends ServiceProvider
 {
     public function register()
     {
-
+        $this->mergeConfigFrom(
+            __DIR__ . '//config/laravel-deploy.php', 'laravel-deploy'
+        );
     }
 
     public function boot()
@@ -27,8 +29,6 @@ class LaravelDeployServiceProvider extends ServiceProvider
             ] );
         }
 
-        $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
-
         $this->publishes( [
             __DIR__ . '/config/laravel-deploy.php' => config_path( 'laravel-deploy.php' ),
         ], 'config' );
@@ -36,5 +36,7 @@ class LaravelDeployServiceProvider extends ServiceProvider
         $this->publishes( [
             __DIR__ . '/database/migrations/' => database_path( 'migrations' ),
         ], 'migrations' );
+
+        $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
     }
 }
