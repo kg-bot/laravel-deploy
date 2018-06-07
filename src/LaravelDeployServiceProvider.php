@@ -38,5 +38,10 @@ class LaravelDeployServiceProvider extends ServiceProvider
         ], 'migrations' );
 
         $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
+
+        $this->publishes( [
+
+            __DIR__ . '/resources/assets/' => resource_path( 'vendor/laravel-deploy' ),
+        ], 'resources' );
     }
 }
