@@ -9,6 +9,7 @@
 namespace KgBot\LaravelDeploy;
 
 
+use ExportLocalization;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use KgBot\LaravelDeploy\Console\Commands\NewClient;
@@ -24,7 +25,10 @@ class LaravelDeployServiceProvider extends ServiceProvider
     {
         View::composer( 'laravel-deploy::dashboard', function ( $view ) {
 
-            return $view->with( [ 'user' => auth()->user() ] );
+            return $view->with( [
+                'user'     => auth()->user(),
+                'messages' => ExportLocalization::export(),
+            ] );
         } );
 
         if ( $this->app->runningInConsole() ) {
@@ -62,7 +66,7 @@ class LaravelDeployServiceProvider extends ServiceProvider
         $this->publishes( [
 
             __DIR__ . '/resources/assets/' => resource_path( 'assets/vendor/laravel-deploy' ),
-        ], 'resources' );
+        ], 'assets' );
 
         /**
          * Localization
