@@ -80,34 +80,8 @@
 
         urls: {
 
-            ajax:   {
-                search: "{{ route('ajax.search') }}",
-                admin:  {
-
-                    users:     {
-
-                        list:   "{{ route('admin.users.list') }}",
-                        store:  "{{ route('admin.users.store') }}",
-                        update: "{{ route('admin.users.update', 0) }}",
-                        delete: "{{ route('admin.users.delete', 0) }}",
-                    },
-                    countries: {
-
-                        fetch:   "{{ route('ajax.admin.countries.fetch') }}",
-                        destroy: "{{ route('ajax.admin.countries.destroy', 0) }}",
-                        approve: "{{ route('ajax.admin.countries.approve', 0) }}",
-                    },
-                    logs:      {
-
-                        fetch: "{{ route('ajax.admin.logs.fetch') }}",
-                    },
-                }
-            },
+            ajax:   {},
             logout: "{{ route('logout') }}",
-            admin:  {
-
-                panel: "{{ route('admin.panel') }}",
-            }
         }
     };
     window.app_name = "{{ config('app.name') }}";
