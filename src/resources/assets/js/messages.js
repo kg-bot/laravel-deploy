@@ -1,4 +1,7 @@
+fs = require( 'fs' );
+
 export default {
+
     /**
      * English
      */

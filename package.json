@@ -18,6 +18,7 @@
     "bootstrap-vue": "^2.0.0-rc.1",
     "change-case": "^3.0.2",
     "datejs": "^1.0.0-rc3",
+    "fs": "0.0.1-security",
     "glob": "^7.1.2",
     "lang.js": "^1.1.12",
     "path": "^0.12.7",
