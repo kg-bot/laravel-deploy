@@ -9,6 +9,7 @@
 namespace KgBot\LaravelDeploy;
 
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use KgBot\LaravelDeploy\Console\Commands\NewClient;
 
@@ -23,6 +24,11 @@ class LaravelDeployServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        View::composer( 'laravel-deploy::dashboard', function ( $view ) {
+
+            return $view->with( [ 'user' => auth()->user() ] );
+        } );
+
         if ( $this->app->runningInConsole() ) {
             $this->commands( [
                 NewClient::class,
