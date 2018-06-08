@@ -50,6 +50,11 @@ class LaravelDeployServiceProvider extends ServiceProvider
             __DIR__ . '/resources/assets/' => resource_path( 'assets/vendor/laravel-deploy' ),
         ], 'resources' );
 
+        $this->publishes( [
+
+            __DIR__ . '/resources/lang' => resource_path( 'lang/vendor/laravel-deploy' ),
+        ], 'lang' );
+
         $this->loadViewsFrom( __DIR__ . '/resources/views', 'laravel-deploy' );
     }
 }
