@@ -56,4 +56,18 @@ return [
         'username' => env( 'LARAVEL_DEPLOY_USERNAME', 'www-data' ),
         'password' => env( 'LARAVEL_DEPLOY_PASSWORD', '' ),
     ],
+    /**
+     * Everything related to front-end part of package should go here
+     */
+    'front'      => [
+
+        'title' => 'Laravel Deploy - Dashboard',
+
+        'routes' => [
+
+            'middleware' => ( env( 'LARAVEL_DEPLOY_FRONT_MIDDLEWARE' ) ) ?
+                explode( ',', env( 'LARAVEL_DEPLOY_FRONT_MIDDLEWARE' ) ) :
+                [],
+        ],
+    ],
 ];

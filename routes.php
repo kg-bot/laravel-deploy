@@ -17,3 +17,16 @@ Route::group( [
 
     Route::any( 'deploy', 'DeployController@request' )->name( 'laravel-deploy.deploy.request' );
 } );
+
+/**
+ * Front-end routes
+ */
+Route::group( [
+
+    'prefix'     => config( 'laravel-deploy.routes.prefix' ) . '/dashboard',
+    'middleware' => array_merge( [ 'web', 'auth' ], config( 'laravel-deploy.routes.front.middleware' ) ),
+    'namespace'  => 'KgBot\LaravelDeploy\Http\Controllers\Front',
+], function () {
+
+    Route::get( '', 'DashboardController@index' )->name( 'laravel-deploy.dashboard' );
+} );
