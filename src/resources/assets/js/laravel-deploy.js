@@ -8,32 +8,19 @@ import Icon from 'vue-awesome/components/Icon';
 import 'vue-awesome/icons';
 // Translations
 import Lang from 'lang.js';
-import messages from './messages';
 // Navigation components
 import NavigationComponent from './components/NavigationComponent.vue';
 import Navbar from './components/Navbar';
-// Admin components
-import AdminNavigationComponent from './components/Admin/AdminNavigationComponent';
-import AdminPanel from './components/Admin/AdminPanel';
-import AdminCountryTable from './components/Admin/Cards/Country/Table';
-import AdminUsers from './components/Admin/Cards/AdminUsers';
-import AdminLogsTable from './components/Admin/Cards/Log/Table';
 
 const default_locale = window.default_language;
 const fallback_locale = window.fallback_locale;
+const messages = window.messages;
 
 window._ = require( 'lodash' );
 window.changeCase = require( 'change-case' );
 require( 'datejs' );
 
-const routes = [
-
-    // Admin routes
-    { path: '/admin/panel', component: AdminPanel, name: 'admin-panel' },
-    { path: '/admin/countries', component: AdminCountryTable, name: 'admin-countries-table' },
-    { path: '/admin/users', component: AdminUsers, name: 'admin-users-table' },
-    { path: '/admin/logs', component: AdminLogsTable, name: 'admin-logs-table' },
-];
+const routes = [];
 
 Vue.use( VueResource );
 Vue.use( BootstrapVue );
@@ -105,9 +92,8 @@ const app = new Vue( {
     el:         '#app',
     components: {
 
-        'navigation-component':       NavigationComponent,
-        'admin-navigation-component': AdminNavigationComponent,
-        'navbar':                     Navbar,
+        'navigation-component': NavigationComponent,
+        'navbar':               Navbar,
     },
     router,
 

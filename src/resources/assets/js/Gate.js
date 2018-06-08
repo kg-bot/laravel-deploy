@@ -3,7 +3,6 @@
  */
 import DashboardPolicy from './Policies/DashboardPolicy';
 import RouterPolicy from './Policies/RouterPolicy';
-import AdminPolicy from './Policies/AdminPolicy';
 
 
 export default class Gate {
@@ -12,14 +11,13 @@ export default class Gate {
         this.user = user;
 
         this.policies = {
-            dashboard:    DashboardPolicy,
-            router:       RouterPolicy,
-            admin_policy: AdminPolicy,
+            dashboard: DashboardPolicy,
+            router:    RouterPolicy,
         };
     }
 
     before() {
-        return this.user.role === 'admin';
+        return this.user.role === undefined || this.user.role === 'admin';
     }
 
     can( action, type, model = null ) {

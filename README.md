@@ -155,6 +155,31 @@ Link to create new webhook should be [https://bitbucket.org/:USERNAME:/:REPO:/ad
 
 It looks like this ![BitBucket Webhook Create](https://i.imgur.com/5Zw4Obl.png), Title can be anything, URL should be same as in GitHub settings, you must check Active and you can check Skip certificate verification for now (until next versions)
 
+## Front-end requirements and installation
+
+Front part of this package works as Vue.js SPA and it heavily depends on npm packages
+
+``
+npm install bootstrap-vue vue-resource vue-router vue-toasted vue-awesome lang.js lodash change-case datejs
+``
+Then you have to export assets from this package, this will add some JavaScript and SASS files inside your resources/assets/vendor/laravel-deploy directory
+
+```
+
+php artisan vendor:publish --provider=KgBot\\LaravelDeploy\\LaravelDeployServiceProvider --tag=assets
+```  
+
+After this you have to alter webpack.mix.js and add this at the end of file
+```
+/**
+ * Laravel deploy assets
+ */
+mix.js( 'resources/assets/vendor/laravel-deploy/js/laravel-deploy.js', 'public/assets/vendor/laravel-deploy/js' )
+   .extract( [ 'vue' ] )
+   .sass( 'resources/assets/vendor/laravel-deploy/sass/laravel-deploy.scss', 'public/assets/vendor/laravel-deploy/css' );
+```
+You can now go to `http://localhost/laravel-deploy/dashboard` or any other URL if you have changed route prefix, just add `/dashboard` at the end.
+
 ## Proposals, comments, feedback
 
 Everything of this is highly welcome and appreciated

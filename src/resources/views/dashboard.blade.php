@@ -37,7 +37,6 @@
 </head>
 <body>
 
-
 <b-container fluid
              id="app">
 
@@ -87,6 +86,7 @@
     window.app_name = "{{ config('app.name') }}";
     window.default_locale = "{{ config('app.lang') }}";
     window.fallback_locale = "{{ config('app.fallback_locale') }}";
+    window.messages = @json($messages);
 
     @auth
         window.user = @json($user);
