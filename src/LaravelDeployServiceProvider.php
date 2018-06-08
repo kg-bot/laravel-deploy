@@ -43,5 +43,7 @@ class LaravelDeployServiceProvider extends ServiceProvider
 
             __DIR__ . '/resources/assets/' => resource_path( 'vendor/laravel-deploy' ),
         ], 'resources' );
+
+        $this->loadViewsFrom( __DIR__ . '/resources/views', 'laravel-deploy' );
     }
 }

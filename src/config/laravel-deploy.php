@@ -68,6 +68,8 @@ return [
             'middleware' => ( env( 'LARAVEL_DEPLOY_FRONT_MIDDLEWARE' ) ) ?
                 explode( ',', env( 'LARAVEL_DEPLOY_FRONT_MIDDLEWARE' ) ) :
                 [],
+
+            'namespace' => 'KgBot\LaravelDeploy\Http\Controllers\Front',
         ],
     ],
 ];

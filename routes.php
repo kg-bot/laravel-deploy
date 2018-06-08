@@ -24,8 +24,8 @@ Route::group( [
 Route::group( [
 
     'prefix'     => config( 'laravel-deploy.routes.prefix' ) . '/dashboard',
-    'middleware' => array_merge( [ 'web', 'auth' ], config( 'laravel-deploy.routes.front.middleware' ) ),
-    'namespace'  => 'KgBot\LaravelDeploy\Http\Controllers\Front',
+    'middleware' => array_merge( [ 'web', 'auth' ], config( 'laravel-deploy.front.routes.middleware' ) ),
+    'namespace'  => config( 'laravel-deploy.front.routes.namespace' ),
 ], function () {
 
     Route::get( '', 'DashboardController@index' )->name( 'laravel-deploy.dashboard' );
