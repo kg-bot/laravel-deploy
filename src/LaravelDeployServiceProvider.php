@@ -27,7 +27,7 @@ class LaravelDeployServiceProvider extends ServiceProvider
 
             return $view->with( [
                 'user'     => auth()->user(),
-                'messages' => ExportLocalization::export(),
+                'messages' => ExportLocalization::export()->toFlat(),
             ] );
         } );
 
