@@ -65,7 +65,7 @@
 
     <b-modal ref="lastLogModal"
              id="lastLogModal"
-             size="xl"
+             size="lg"
              @hidden="closeLastLog">
 
       <template v-if="last_log !== null"
