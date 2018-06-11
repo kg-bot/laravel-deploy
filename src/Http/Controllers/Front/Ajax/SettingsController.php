@@ -79,7 +79,7 @@ class SettingsController extends BaseController
     public function deployNow( Client $client )
     {
 
-        dispatch( new DeployJob( $client, $client->script_source ) );
+        dispatch( new DeployJob( $client, base_path( $client->script_source ) ) );
 
         return response()->json( 'success' );
     }
