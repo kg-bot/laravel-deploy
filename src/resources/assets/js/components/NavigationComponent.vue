@@ -7,7 +7,7 @@
 
         <b-input v-model="query"
                  type="text"
-                 :placeholder="trans.get('search.placeholder')"></b-input>
+                 :placeholder="trans.get('laravel-deploy.search.placeholder')"></b-input>
 
         <b-input-group-text slot="append"
                             style="cursor: pointer;">

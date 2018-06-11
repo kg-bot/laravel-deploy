@@ -13,22 +13,24 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use KgBot\LaravelDeploy\Models\DeploySource;
+use KgBot\LaravelDeploy\Models\Client;
 
 class LaravelDeployFinished
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $client;
+    public $message;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct( DeploySource $client )
+    public function __construct( Client $client, $message )
     {
-        $this->client = $client;
+        $this->client  = $client;
+        $this->message = $message;
     }
 
     /**

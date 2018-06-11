@@ -15,22 +15,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use KgBot\LaravelDeploy\Models\Client;
 
-class LaravelDeployStarted
+class LaravelDeployFailed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $client;
-    public $command;
+    public $message;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct( Client $client, string $command )
+    public function __construct( Client $client, string $message )
     {
         $this->client  = $client;
-        $this->command = $command;
+        $this->message = $message;
     }
 
     /**

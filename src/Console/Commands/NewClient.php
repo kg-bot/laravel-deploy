@@ -10,7 +10,7 @@ namespace KgBot\LaravelDeploy\Console\Commands;
 
 
 use Illuminate\Console\Command;
-use KgBot\LaravelDeploy\Models\DeploySource;
+use KgBot\LaravelDeploy\Models\Client;
 
 class NewClient extends Command
 {
@@ -47,11 +47,11 @@ class NewClient extends Command
     {
 
         $name          = $this->argument( 'name' );
-        $token         = bcrypt( $this->argument( 'token' ) );
+        $token         = $this->argument( 'token' );
         $script_source = $this->argument( 'script_source' );
         $source        = $this->argument( 'source' );
 
-        $client = DeploySource::create( compact( 'name', 'token', 'script_source', 'source' ) );
+        $client = Client::create( compact( 'name', 'token', 'script_source', 'source' ) );
 
         $this->info( 'New client created, token has been encrypted and it is: ' . $token );
     }

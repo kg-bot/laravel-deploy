@@ -11,8 +11,13 @@ import Lang from 'lang.js';
 // Navigation components
 import NavigationComponent from './components/NavigationComponent.vue';
 import Navbar from './components/Navbar';
+// Clients
+import ClientsTable from './components/Clients/Table';
+// Settings
+import Settings from './components/Settings/Settings';
+import SettingsDeployments from './components/Settings/Components/Deployments';
 
-const default_locale = window.default_language;
+const default_locale = window.default_locale;
 const fallback_locale = window.fallback_locale;
 const messages = window.messages;
 
@@ -20,7 +25,21 @@ window._ = require( 'lodash' );
 window.changeCase = require( 'change-case' );
 require( 'datejs' );
 
-const routes = [];
+const routes = [
+
+    { path: '/', redirect: 'clients' },
+    { path: '/clients', component: ClientsTable, name: 'clients' },
+    {
+        path: '/settings', component: Settings, name: 'settings', redirect: 'settings/deployments', children:
+              [
+                  {
+                      path:      'deployments',
+                      component: SettingsDeployments,
+                      name:      'settings-deployments'
+                  }
+              ]
+    },
+];
 
 Vue.use( VueResource );
 Vue.use( BootstrapVue );
@@ -28,6 +47,8 @@ Vue.use( VueRouter );
 Vue.component( 'icon', Icon );
 Vue.use( Toasted );
 
+console.log( messages );
+console.log( default_locale );
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 Vue.prototype.$gate = new Gate( window.user );
 VueRouter.prototype.$gate = new Gate( window.user );

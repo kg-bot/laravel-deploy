@@ -11,7 +11,7 @@ namespace KgBot\LaravelDeploy\Http\Controllers;
 use Illuminate\Http\Request;
 use KgBot\LaravelDeploy\Exceptions\UnableToReadScriptFile;
 use KgBot\LaravelDeploy\Jobs\DeployJob;
-use KgBot\LaravelDeploy\Models\DeploySource;
+use KgBot\LaravelDeploy\Models\Client;
 
 class DeployController extends BaseController
 {
@@ -19,10 +19,11 @@ class DeployController extends BaseController
     {
         if ( config( 'laravel-deploy.run_deploy' ) ) {
 
-            $client = DeploySource::where( [
+            $client = Client::where( [
 
                 [ 'token', $request->get( '_token' ) ],
                 [ 'active', true ],
+                [ 'auto_deploy' => true ],
             ] )->first();
 
             $filename    = $client->script_source;

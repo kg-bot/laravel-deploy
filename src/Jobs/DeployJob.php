@@ -7,9 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use KgBot\LaravelDeploy\Events\LaravelDeployFailed;
 use KgBot\LaravelDeploy\Events\LaravelDeployFinished;
 use KgBot\LaravelDeploy\Events\LaravelDeployStarted;
-use KgBot\LaravelDeploy\Models\DeploySource;
+use KgBot\LaravelDeploy\Models\Client;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Symfony\Component\Process\Process;
 
 class DeployJob implements ShouldQueue
@@ -22,12 +25,13 @@ class DeployJob implements ShouldQueue
     public $client;
     public $script_file;
 
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct( DeploySource $client, string $script_file )
+    public function __construct( Client $client, string $script_file )
     {
         $this->client      = $client;
         $this->script_file = $script_file;
@@ -40,22 +44,33 @@ class DeployJob implements ShouldQueue
      */
     public function handle()
     {
+        $logger = new Logger( 'laravel-deploy-logger' );
+
+        $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
+        $logger->pushHandler( new StreamHandler( storage_path( '/logs/' . $log_file_name ), Logger::DEBUG ) );
+
         $command = 'echo ' . config( 'laravel-deploy.user.password' );
         $command .= ' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
         $command .= ' sh ' . $this->script_file;
 
         $process = new Process( $command );
-        event( new LaravelDeployStarted( $this->client ) );
+        event( new LaravelDeployStarted( $this->client, $command ) );
         $process->run();
         try {
 
-            \Log::info( $process->getOutput() );
+            $logger->info( $process->getOutput(), [
+                'client' => json_encode( $this->client ),
+                'script' => $this->script_file,
+            ] );
+            event( new LaravelDeployFinished( $this->client, $process->getOutput() ) );
 
         } catch ( \Exception $exception ) {
 
-            \Log::critical( 'Can\'t get deploy process output.' );
+            $logger->critical( $process->getOutput(), [
+                'client' => json_encode( $this->client ),
+                'script' => $this->script_file,
+            ] );
+            event( new LaravelDeployFailed( $this->client, $exception->getMessage() ) );
         }
-
-        event( new LaravelDeployFinished( $this->client ) );
     }
 }

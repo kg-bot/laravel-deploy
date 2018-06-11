@@ -6,7 +6,12 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-vue/dist/bootstrap-vue';
 
-.navbar-laravel {
-  background-color : #ffffff;
-  box-shadow       : 0 2px 4px rgba(0, 0, 0, 0.04);
+.bg-black {
+
+  background-color : $bg-primary-black;
+}
+
+.text-blue-on-primary-black {
+
+  color : $blue-on-primary-black;
 }

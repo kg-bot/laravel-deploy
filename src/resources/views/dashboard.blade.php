@@ -17,7 +17,7 @@
         type="text/css">
 
   <!-- Default Styles -->
-  <link href="{{ asset('assets/vendor/laravel-deploy/css/app.css') }}"
+  <link href="{{ asset('assets/vendor/laravel-deploy/css/laravel-deploy.css') }}"
         rel="stylesheet">
 
   <style>
@@ -44,25 +44,8 @@
 
 
   <b-row class="mt-2">
-    @if(Gate::allows('access-dashboard', $user ))
-      <b-col xs="12"
-             md="3"
-             lg="2">
 
-        <div id="navigation-vue">
-
-          @if(!$user->isAdmin() )
-            <navigation-component></navigation-component>
-          @else
-            <admin-navigation-component></admin-navigation-component>
-          @endif
-        </div>
-      </b-col>
-    @endif
-
-    <b-col xs="12"
-           md="9"
-           lg="10">
+    <b-col>
 
       <router-view></router-view>
     </b-col>
@@ -79,12 +62,32 @@
 
         urls: {
 
-            ajax:   {},
+            ajax:   {
+
+                clients:  {
+
+                    index:       "{{ route('laravel-deploy.ajax.clients.index') }}",
+                    store:       "{{ route('laravel-deploy.ajax.clients.store') }}",
+                    update:      "{{ route('laravel-deploy.ajax.clients.update', 0) }}",
+                    destroy:     "{{ route('laravel-deploy.ajax.clients.destroy', 0) }}",
+                    status:      "{{ route('laravel-deploy.ajax.clients.status', 0) }}",
+                    auto_deploy: "{{ route('laravel-deploy.ajax.clients.auto_deploy', 0) }}",
+                },
+                settings: {
+
+                    last_log:    "{{ route('laravel-deploy.ajax.settings.last_log') }}",
+                    index:       "{{ route('laravel-deploy.ajax.settings.index') }}",
+                    deployments: {
+
+                        deploy_now: "{{ route('laravel-deploy.ajax.settings.deployments.deploy_now', 0) }}",
+                    },
+                },
+            },
             logout: "{{ route('logout') }}",
         }
     };
     window.app_name = "{{ config('app.name') }}";
-    window.default_locale = "{{ config('app.lang') }}";
+    window.default_locale = "{{ config('app.locale') }}";
     window.fallback_locale = "{{ config('app.fallback_locale') }}";
     window.messages = @json($messages);
 

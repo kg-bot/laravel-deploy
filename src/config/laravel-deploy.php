@@ -8,7 +8,7 @@
 
 return [
 
-    'routes'     => [
+    'routes'        => [
 
         /**
          * Route prefix, example of route http://localhost/laravel-deploy/deploy?_token=#################
@@ -26,7 +26,7 @@ return [
         'middleware' => ( env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) ) ? explode( ',', env( 'LARAVEL_DEPLOY_MIDDLEWARE' ) )
             : [],
     ],
-    'events'     => [
+    'events'        => [
 
         /**
          * This package emits some events before and after it run's deployment script
@@ -39,27 +39,28 @@ return [
     /**
      * This packages is doing all of it's work in a Job and here you change queue on which it will execute jobs
      */
-    'queue'      => env( 'LARAVEL_DEPLOY_QUEUE', 'default' ),
-
-    /**
-     * With this directive you can enable/disable this package
-     */
-    'run_deploy' => env( 'LARAVEL_DEPLOY_RUN', true ),
+    'queue'         => env( 'LARAVEL_DEPLOY_QUEUE', 'default' ),
 
     /**
      * Detailed description is provided inside a README.md file
      *
      * Here you set your default server user and password which will be used to run deploy script
      */
-    'user'       => [
+    'user'          => [
 
         'username' => env( 'LARAVEL_DEPLOY_USERNAME', 'www-data' ),
         'password' => env( 'LARAVEL_DEPLOY_PASSWORD', '' ),
     ],
+
+    /**
+     * Name of the log file where deployment logs will be saved
+     */
+    'log_file_name' => env( 'LARAVEL_DEPLOY_LOG_FILE_NAME', 'laravel-deploy' ),
+
     /**
      * Everything related to front-end part of package should go here
      */
-    'front'      => [
+    'front'         => [
 
         'title' => 'Laravel Deploy - Dashboard',
 
@@ -70,6 +71,15 @@ return [
                 [],
 
             'namespace' => 'KgBot\LaravelDeploy\Http\Controllers\Front',
+
+            'ajax' => [
+
+                'middleware' => ( env( 'LARAVEL_DEPLOY_FRONT_AJAX_MIDDLEWARE' ) ) ?
+                    explode( ',', env( 'LARAVEL_DEPLOY_FRONT_AJAX_MIDDLEWARE' ) ) :
+                    [],
+
+                'namespace' => 'KgBot\LaravelDeploy\Http\Controllers\Front\Ajax',
+            ],
         ],
     ],
 ];

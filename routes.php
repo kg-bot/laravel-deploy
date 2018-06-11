@@ -30,3 +30,48 @@ Route::group( [
 
     Route::get( '', 'DashboardController@index' )->name( 'laravel-deploy.dashboard' );
 } );
+
+/**
+ * Ajax routes
+ */
+Route::group( [
+
+    'prefix'     => config( 'laravel-deploy.routes.prefix' ) . '/ajax',
+    'middleware' => array_merge( [ 'web' ], config( 'laravel-deploy.front.routes.ajax.middleware' ) ),
+    'namespace'  => config( 'laravel-deploy.front.routes.ajax.namespace' ),
+], function () {
+
+    Route::post( '/clients/{client}/status', 'ClientsController@changeStatus' )
+         ->name( 'laravel-deploy.ajax.clients.status' );
+
+    Route::post( '/clients/{client}/auto-deploy', 'ClientsController@changeAutoDeploy' )
+         ->name( 'laravel-deploy.ajax.clients.auto_deploy' );
+
+    Route::resource( '/clients', 'ClientsController', [
+
+        'only'  => [ 'index', 'store', 'update', 'destroy' ],
+        'names' => [
+
+            'index'   => 'laravel-deploy.ajax.clients.index',
+            'store'   => 'laravel-deploy.ajax.clients.store',
+            'update'  => 'laravel-deploy.ajax.clients.update',
+            'destroy' => 'laravel-deploy.ajax.clients.destroy',
+        ],
+    ] );
+
+    /**
+     * Settings routes
+     */
+    Route::group( [ 'prefix' => 'settings' ], function () {
+
+        Route::get( 'last-log', 'SettingsController@lastLog' )->name( 'laravel-deploy.ajax.settings.last_log' );
+        Route::get( 'logs', 'SettingsController@allLogs' )->name( 'laravel-deploy.ajax.settings.logs' );
+        Route::get( 'index', 'SettingsController@index' )->name( 'laravel-deploy.ajax.settings.index' );
+
+        /**
+         * Deployments routes
+         */
+        Route::post( 'deploy/now/{client}', 'SettingsController@deployNow' )
+             ->name( 'laravel-deploy.ajax.settings.deployments.deploy_now' );
+    } );
+} );

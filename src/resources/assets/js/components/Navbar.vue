@@ -1,18 +1,23 @@
 <template>
   <b-navbar toggleable="md"
-            type="light"
-            variant="info">
+            type="dark"
+            variant="secondary">
 
-    <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+    <b-navbar-toggle
+            target="nav_collapse"></b-navbar-toggle>
 
-    <b-navbar-brand href="/">{{ app_name }}</b-navbar-brand>
+    <b-navbar-brand href="/">{{ app_name }} - Deploy
+    </b-navbar-brand>
 
     <b-collapse is-nav
                 id="nav_collapse">
 
       <b-navbar-nav>
 
-        <b-nav-item href="/log-viewer">{{ trans.get('admin.log_viewer')}}
+        <b-nav-item :to="{name: 'clients' }">{{ trans.get('laravel-deploy.navbar.clients')}}
+        </b-nav-item>
+
+        <b-nav-item :to="{name: 'settings' }">{{ trans.get('laravel-deploy.navbar.settings')}}
         </b-nav-item>
       </b-navbar-nav>
 
@@ -42,10 +47,9 @@
 
             return {
 
-                logout:      window.Laravel.urls.logout,
-                user:        window.user,
-                app_name:    window.app_name,
-                admin_panel: window.Laravel.urls.admin.panel,
+                logout:   window.Laravel.urls.logout,
+                user:     window.user,
+                app_name: window.app_name,
             };
         },
         methods: {
@@ -57,7 +61,11 @@
                     window.location.replace( '/' );
                 }, response => {
 
-                    window.location.replace( '/' );
+                    this.$toasted.show( 'Can\'t log you out right now.', {
+
+                        duration: 3000,
+                        type:     'error',
+                    } );
                 } );
             },
         }
