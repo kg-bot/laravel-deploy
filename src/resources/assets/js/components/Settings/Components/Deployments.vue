@@ -65,6 +65,7 @@
 
     <b-modal ref="lastLogModal"
              id="lastLogModal"
+             size="xl"
              @hidden="closeLastLog">
 
       <template v-if="last_log !== null"
@@ -77,6 +78,7 @@
       </template>
 
       <b-textarea disabled
+                  rows="10"
                   v-model="last_log.message"
                   v-if="last_log !== null">
       </b-textarea>
