@@ -159,9 +159,9 @@ It looks like this ![BitBucket Webhook Create](https://i.imgur.com/5Zw4Obl.png),
 
 Front part of this package works as Vue.js SPA and it heavily depends on npm packages
 
-``
+````
 npm install bootstrap-vue vue-resource vue-router vue-toasted vue-awesome lang.js lodash change-case datejs
-``
+```
 Then you have to export assets from this package, this will add some JavaScript and SASS files inside your resources/assets/vendor/laravel-deploy directory
 
 ```
@@ -174,9 +174,8 @@ After this you have to alter webpack.mix.js and add this at the end of file
 /**
  * Laravel deploy assets
  */
-mix.js( 'resources/assets/vendor/laravel-deploy/js/laravel-deploy.js', 'public/assets/vendor/laravel-deploy/js' )
-   .extract( [ 'vue' ] )
-   .sass( 'resources/assets/vendor/laravel-deploy/sass/laravel-deploy.scss', 'public/assets/vendor/laravel-deploy/css' );
+mix.js( 'resources/assets/vendor/laravel-deploy/js/laravel-deploy.js', 'public/assets/js' )
+   .sass( 'resources/assets/vendor/laravel-deploy/sass/laravel-deploy.scss', 'public/assets/css' );
 ```
 You can now go to `http://localhost/laravel-deploy/dashboard` or any other URL if you have changed route prefix, just add `/dashboard` at the end.
 

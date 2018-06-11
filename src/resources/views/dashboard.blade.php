@@ -97,9 +97,9 @@
 </script>
 @stack('urls')
 
-<script src="{{ asset('assets/vendor/laravel-deploy/js/manifest.js') }}"></script>
-<script src="{{ asset('assets/vendor/laravel-deploy/js/vendor.js') }}"></script>
-<script src="{{asset('assets/vendor/laravel-deploy/js/laravel-deploy.js')}}"></script>
+<script src="{{ asset('assets/js/manifest.js') }}"></script>
+<script src="{{ asset('assets/js/vendor.js') }}"></script>
+<script src="{{asset('assets/js/laravel-deploy.js')}}"></script>
 
 <!-- Stack Scripts -->
 @stack('scripts')
