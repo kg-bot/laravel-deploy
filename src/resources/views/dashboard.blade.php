@@ -17,7 +17,7 @@
         type="text/css">
 
   <!-- Default Styles -->
-  <link href="{{ asset('assets/vendor/laravel-deploy/css/laravel-deploy.css') }}"
+  <link href="{{ asset('assets/css/laravel-deploy.css') }}"
         rel="stylesheet">
 
   <style>
