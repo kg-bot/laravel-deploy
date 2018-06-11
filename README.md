@@ -159,15 +159,14 @@ It looks like this ![BitBucket Webhook Create](https://i.imgur.com/5Zw4Obl.png),
 
 Front part of this package works as Vue.js SPA and it heavily depends on npm packages
 
-````
+```
 npm install bootstrap-vue vue-resource vue-router vue-toasted vue-awesome lang.js lodash change-case datejs
 ```
 Then you have to export assets from this package, this will add some JavaScript and SASS files inside your resources/assets/vendor/laravel-deploy directory
 
 ```
-
 php artisan vendor:publish --provider=KgBot\\LaravelDeploy\\LaravelDeployServiceProvider --tag=assets
-```  
+```
 
 After this you have to alter webpack.mix.js and add this at the end of file
 ```
