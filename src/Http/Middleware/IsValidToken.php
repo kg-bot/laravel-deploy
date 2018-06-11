@@ -11,7 +11,7 @@ namespace KgBot\LaravelDeploy\Http\Middleware;
 use Closure;
 use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 use KgBot\LaravelDeploy\Exceptions\InvalidClientException;
-use KgBot\LaravelDeploy\Models\DeploySource;
+use KgBot\LaravelDeploy\Models\Client;
 
 
 class IsValidToken extends Middleware
@@ -30,7 +30,7 @@ class IsValidToken extends Middleware
 
         if ( $token ) {
 
-            $client = DeploySource::where( [
+            $client = Client::where( [
 
                 [ 'token', $token ],
                 [ 'active', true ],

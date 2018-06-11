@@ -1,0 +1,17 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// Variables
+@import "variables";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/dist/bootstrap-vue';
+
+.bg-black {
+
+  background-color : $bg-primary-black;
+}
+
+.text-blue-on-primary-black {
+
+  color : $blue-on-primary-black;
+}

@@ -9,6 +9,8 @@
 namespace KgBot\LaravelDeploy;
 
 
+use ExportLocalization;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use KgBot\LaravelDeploy\Console\Commands\NewClient;
 
@@ -16,27 +18,73 @@ class LaravelDeployServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '//config/laravel-deploy.php', 'laravel-deploy'
-        );
+
     }
 
     public function boot()
     {
+        View::composer( 'laravel-deploy::dashboard', function ( $view ) {
+
+            return $view->with( [
+                'user'     => auth()->user(),
+                'messages' => ExportLocalization::export()->toFlat(),
+            ] );
+        } );
+
         if ( $this->app->runningInConsole() ) {
             $this->commands( [
                 NewClient::class,
             ] );
         }
 
+        /**
+         * Config
+         */
+        $this->mergeConfigFrom(
+            __DIR__ . '//config/laravel-deploy.php', 'laravel-deploy'
+        );
+
         $this->publishes( [
             __DIR__ . '/config/laravel-deploy.php' => config_path( 'laravel-deploy.php' ),
         ], 'config' );
 
+        /**
+         * Migrations
+         */
         $this->publishes( [
             __DIR__ . '/database/migrations/' => database_path( 'migrations' ),
         ], 'migrations' );
 
+        /**
+         * Routes
+         */
         $this->loadRoutesFrom( __DIR__ . '/../routes.php' );
+
+        /**
+         * Assets
+         */
+        $this->publishes( [
+
+            __DIR__ . '/resources/assets/' => resource_path( 'assets/vendor/laravel-deploy' ),
+        ], 'assets' );
+
+        /**
+         * Localization
+         */
+        $this->loadTranslationsFrom( __DIR__ . '/resource/lang', 'laravel-deploy' );
+        $this->publishes( [
+
+            __DIR__ . '/resources/lang' => resource_path( 'lang/vendor/laravel-deploy' ),
+        ], 'lang' );
+
+        /**
+         * Views
+         */
+        $this->loadViewsFrom( __DIR__ . '/resources/views', 'laravel-deploy' );
+
+        $this->publishes( [
+
+            __DIR__ . '/resources/views' => resource_path( 'views/vendor/laravel-deploy' ),
+        ], 'views' );
     }
 }

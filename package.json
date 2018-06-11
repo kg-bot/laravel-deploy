@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "devDependencies": {
+    "axios": "^0.17",
+    "bootstrap": "^4.0.0",
+    "cross-env": "^5.1",
+    "css-loader": "^0.28.10",
+    "jquery": "^3.2",
+    "laravel-localization-loader": "^1.0.5",
+    "laravel-mix": "^2.0",
+    "lodash": "^4.17.4",
+    "popper.js": "^1.12",
+    "style-loader": "^0.20.2",
+    "vue": "^2.5.7"
+  },
+  "dependencies": {
+    "ajv": "^6.5.0",
+    "bootstrap-vue": "^2.0.0-rc.1",
+    "change-case": "^3.0.2",
+    "datejs": "^1.0.0-rc3",
+    "fs": "0.0.1-security",
+    "glob": "^7.1.2",
+    "lang.js": "^1.1.12",
+    "path": "^0.12.7",
+    "require-dir": "^1.0.0",
+    "require.all": "^2.0.4",
+    "vee-validate": "^2.0.5",
+    "vue-awesome": "^3.0.2",
+    "vue-multiselect": "^2.1.0",
+    "vue-resource": "^1.5.0",
+    "vue-router": "^3.0.1",
+    "vue-spinner": "^1.0.3",
+    "vue-toasted": "^1.1.24",
+    "vue2-dropzone": "^3.1.0",
+    "vuejs-datepicker": "^0.9.29"
+  }
+}

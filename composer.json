@@ -3,6 +3,8 @@
   "description": "Laravel package used to automatically deploy code from GIT version controls",
   "require": {
     "php": ">=7.1",
+    "ddtraceweb/monolog-parser": "^1.2",
+    "kg-bot/laravel-localization-to-vue": "1.*",
     "laravel/framework": "5.*"
   },
   "keywords": [
