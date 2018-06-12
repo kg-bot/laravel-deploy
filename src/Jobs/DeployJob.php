@@ -47,30 +47,53 @@ class DeployJob implements ShouldQueue
         $logger = new Logger( 'laravel-deploy-logger' );
 
         $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
-        $logger->pushHandler( new StreamHandler( storage_path( '/logs/' . $log_file_name ), Logger::DEBUG ) );
+        $stream        = new StreamHandler( storage_path( '/logs/' . $log_file_name ), Logger::DEBUG );
 
-        $command = 'echo ' . config( 'laravel-deploy.user.password' );
-        $command .= ' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
+
+        $logger->pushHandler( $stream );
+
+        $command = 'echo \'' . config( 'laravel-deploy.user.password' );
+        $command .= '\' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
         $command .= ' sh ' . $this->script_file;
 
+        $command = 'sh ' . $this->script_file;
+        echo $command;
+
         $process = new Process( $command );
+        $process->setTimeout( 300 );
+        $message = '';
+        $error   = '';
         event( new LaravelDeployStarted( $this->client, $command ) );
-        $process->run();
-        try {
 
-            $logger->info( $process->getOutput(), [
+        ini_set( 'max_execution_time', 200 );
+        $process->run( function ( $type, $buffer ) use ( &$message, &$error ) {
+
+            if ( Process::ERR === $type ) {
+
+                $error .= $buffer . '\r\n';
+
+            } else {
+
+                $message .= $buffer . '\r\n';
+            }
+        } );
+
+        if ( $message !== '' ) {
+
+            $logger->info( $message, [
                 'client' => json_encode( $this->client ),
                 'script' => $this->script_file,
             ] );
-            event( new LaravelDeployFinished( $this->client, $process->getOutput() ) );
+            event( new LaravelDeployFinished( $this->client, $message ) );
 
-        } catch ( \Exception $exception ) {
+        } else if ( $error !== '' ) {
 
-            $logger->critical( $process->getOutput(), [
+            $logger->critical( $error, [
                 'client' => json_encode( $this->client ),
                 'script' => $this->script_file,
             ] );
-            event( new LaravelDeployFailed( $this->client, $exception->getMessage() ) );
+            event( new LaravelDeployFailed( $this->client, $error ) );
         }
+
     }
 }

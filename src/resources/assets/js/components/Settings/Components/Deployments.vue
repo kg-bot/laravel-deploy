@@ -64,6 +64,9 @@
     </b-modal>
 
     <b-modal ref="lastLogModal"
+             ok-only
+             ok-title="Close"
+             ok-variant="secondary"
              id="lastLogModal"
              size="lg"
              @hidden="closeLastLog">
@@ -77,11 +80,9 @@
         </h4>
       </template>
 
-      <b-textarea disabled
-                  rows="10"
-                  v-model="last_log.message"
-                  v-if="last_log !== null">
-      </b-textarea>
+      <pre v-if="last_log !== null"
+           v-html="last_log.message"
+           style="padding: 30px 10px; white-space: pre-wrap; background-color: #e0e0e0;"></pre>
     </b-modal>
 
     <b-modal ref="changeQuickDeployModal"

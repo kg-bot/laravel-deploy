@@ -21,7 +21,7 @@ class DeployController extends BaseController
 
             [ 'token', $request->get( '_token' ) ],
             [ 'active', true ],
-            [ 'auto_deploy' => true ],
+            [ 'auto_deploy', true ],
         ] )->first();
 
         $filename    = $client->script_source;

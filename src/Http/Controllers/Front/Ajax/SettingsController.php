@@ -9,6 +9,8 @@ use KgBot\LaravelDeploy\Models\Client;
 
 class SettingsController extends BaseController
 {
+    protected $lf_characters = [ '\r\n', '\n\r', '\r', '\n' ];
+
     /**
      * Return last deploy log
      *
@@ -35,7 +37,10 @@ class SettingsController extends BaseController
 
         if ( count( $reader ) ) {
 
-            return response()->json( [ 'log' => $reader[ count( $reader ) - 2 ] ] );
+            $log              = $reader[ count( $reader ) - 2 ];
+            $log[ 'message' ] = str_replace( $this->lf_characters, '<br />', $log[ 'message' ] );
+
+            return response()->json( [ 'log' => $log ] );
 
         } else {
 
