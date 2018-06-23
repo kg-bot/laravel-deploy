@@ -2,43 +2,33 @@
 
 namespace KgBot\LaravelDeploy\Http\Controllers\Front\Ajax;
 
-use Dubture\Monolog\Reader\LogReader;
 use KgBot\LaravelDeploy\Http\Controllers\BaseController;
 use KgBot\LaravelDeploy\Jobs\DeployJob;
 use KgBot\LaravelDeploy\Models\Client;
+use KgBot\LaravelDeploy\Utils\LogParser;
 
 class SettingsController extends BaseController
 {
-    protected $lf_characters = [ '\r\n', '\n\r', '\r', '\n' ];
 
     /**
      * Return last deploy log
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function lastLog()
     {
 
-        $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
-        $path          = storage_path( 'logs/' . $log_file_name );
+        $reader = $this->getLogs();
 
-        if ( file_exists( $path ) ) {
-
-            $reader  = new LogReader( $path );
-            $pattern =
-                '/\[(?P<date>.*)\] (?P<logger>[\w-\s]+).(?P<level>\w+): (?P<message>[^\[\{]+) (?P<context>[\[\{].*[\]\}]) (?P<extra>[\[\{].*[\]\}])/';
-            $reader->getParser()->registerPattern( 'newPatternName', $pattern );
-            $reader->setPattern( 'newPatternName' );
-
-        } else {
+        if ( is_null( $reader ) ) {
 
             return response()->json( 'Log file path does not exist, check your configuration and try again.', 404 );
         }
 
         if ( count( $reader ) ) {
 
-            $log              = $reader[ count( $reader ) - 2 ];
-            $log[ 'message' ] = str_replace( $this->lf_characters, '<br />', $log[ 'message' ] );
+            $log = $reader[ 0 ];
 
             return response()->json( [ 'log' => $log ] );
 
@@ -49,24 +39,50 @@ class SettingsController extends BaseController
     }
 
     /**
-     * Return collection of all logs
+     * Read deployment log file and return it's content
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array|\KgBot\LaravelDeploy\Utils\LogParser|null
+     * @throws \Exception
      */
-    public function allLogs()
+    protected function getLogs()
     {
         $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
         $path          = storage_path( 'logs/' . $log_file_name );
 
         if ( file_exists( $path ) ) {
 
-            $reader  = new LogReader( $path );
-            $pattern =
-                '/\[(?P<date>.*)\] (?P<logger>[\w-\s]+).(?P<level>\w+): (?P<message>[^\[\{]+) (?P<context>[\[\{].*[\]\}]) (?P<extra>[\[\{].*[\]\}])/';
-            $reader->getParser()->registerPattern( 'newPatternName', $pattern );
-            $reader->setPattern( 'newPatternName' );
+            $file = file_get_contents( $path );
+            if ( $file ) {
+
+                $reader = new LogParser();
+                $reader = $reader->parse( $file );
+
+                return $reader;
+
+            } else {
+
+                throw new \Exception( 'Couldn\'t read deployment log file.' );
+            }
+
 
         } else {
+
+            return null;
+
+        }
+    }
+
+    /**
+     * Return collection of all deploy logs
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function allLogs()
+    {
+        $reader = $this->getLogs();
+
+        if ( is_null( $reader ) ) {
 
             return response()->json( 'Log file path does not exist, check your configuration and try again.', 404 );
         }
@@ -81,17 +97,41 @@ class SettingsController extends BaseController
         }
     }
 
+    /**
+     * Start deployment from web dashboard
+     *
+     * @param \KgBot\LaravelDeploy\Models\Client $client
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deployNow( Client $client )
     {
 
-        dispatch( new DeployJob( $client, base_path( $client->script_source ) ) );
+        dispatch( new DeployJob( $client,
+            base_path( $client->script_source ) ) )->onQueue( config( 'laravel-deploy.queue' ) );
 
         return response()->json( 'success' );
     }
 
+    /**
+     * Open settings page of web dashboard
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
-        $clients  = Client::Active()->get();
+        /**
+         * @var \Illuminate\Support\Collection
+         */
+        $clients = Client::Active()->get();
+
+        $clients = $clients->each( function ( $client ) {
+
+            $enabled = ( $client->active ) ? 'Enabled' : 'Disabled';
+
+            return $client->text = $client->name . ' - ' . $enabled;
+        } );
+
         $settings = [
 
             'quick_deploy' => config( 'laravel-deploy.run_deploy' ),

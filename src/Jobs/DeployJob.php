@@ -11,6 +11,7 @@ use KgBot\LaravelDeploy\Events\LaravelDeployFailed;
 use KgBot\LaravelDeploy\Events\LaravelDeployFinished;
 use KgBot\LaravelDeploy\Events\LaravelDeployStarted;
 use KgBot\LaravelDeploy\Models\Client;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Symfony\Component\Process\Process;
@@ -25,6 +26,21 @@ class DeployJob implements ShouldQueue
     public $client;
     public $script_file;
 
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
+     * @var Process
+     */
+    protected $process;
+
+    /**
+     * @var string $command Command to be executed
+     */
+    protected $command;
+
 
     /**
      * Create a new job instance.
@@ -35,6 +51,38 @@ class DeployJob implements ShouldQueue
     {
         $this->client      = $client;
         $this->script_file = $script_file;
+        $this->setLogger();
+        $this->setProcess();
+    }
+
+    protected function setLogger()
+    {
+        $this->logger = new Logger( 'laravel-deploy-logger' );
+
+        $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
+        $stream        = new StreamHandler( storage_path( '/logs/' . $log_file_name ), Logger::DEBUG );
+        $formatter     = tap( new LineFormatter( null, null, true, true ), function ( $formatter ) {
+            $formatter->includeStacktraces();
+        } );
+        $stream->setFormatter( $formatter );
+
+
+        $this->logger->pushHandler( $stream );
+    }
+
+    protected function setProcess()
+    {
+        $command = 'echo ' . config( 'laravel-deploy.user.password' );
+        $command .= ' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
+        $command .= ' sh ' . $this->script_file;
+
+        $this->command = $command;
+
+        $process = new Process( $command );
+        $process->setTimeout( 500 );
+        $process->setIdleTimeout( 100 );
+
+        $this->process = $process;
     }
 
     /**
@@ -44,55 +92,25 @@ class DeployJob implements ShouldQueue
      */
     public function handle()
     {
-        $logger = new Logger( 'laravel-deploy-logger' );
+        event( new LaravelDeployStarted( $this->client, $this->command ) );
 
-        $log_file_name = config( 'laravel-deploy.log_file_name', 'laravel-log' );
-        $stream        = new StreamHandler( storage_path( '/logs/' . $log_file_name ), Logger::DEBUG );
+        $this->process->run();
 
+        if ( $this->process->isSuccessful() ) {
 
-        $logger->pushHandler( $stream );
-
-        $command = 'echo \'' . config( 'laravel-deploy.user.password' );
-        $command .= '\' | sudo -S -u ' . config( 'laravel-deploy.user.username' );
-        $command .= ' sh ' . $this->script_file;
-
-        $command = 'sh ' . $this->script_file;
-        echo $command;
-
-        $process = new Process( $command );
-        $process->setTimeout( 300 );
-        $message = '';
-        $error   = '';
-        event( new LaravelDeployStarted( $this->client, $command ) );
-
-        ini_set( 'max_execution_time', 200 );
-        $process->run( function ( $type, $buffer ) use ( &$message, &$error ) {
-
-            if ( Process::ERR === $type ) {
-
-                $error .= $buffer . '\r\n';
-
-            } else {
-
-                $message .= $buffer . '\r\n';
-            }
-        } );
-
-        if ( $message !== '' ) {
-
-            $logger->info( $message, [
+            $this->logger->info( PHP_EOL . $this->process->getOutput(), [
                 'client' => json_encode( $this->client ),
                 'script' => $this->script_file,
             ] );
-            event( new LaravelDeployFinished( $this->client, $message ) );
+            event( new LaravelDeployFinished( $this->client, $this->process->getOutput() ) );
 
-        } else if ( $error !== '' ) {
+        } else {
 
-            $logger->critical( $error, [
+            $this->logger->critical( PHP_EOL . $this->process->getOutput(), [
                 'client' => json_encode( $this->client ),
                 'script' => $this->script_file,
             ] );
-            event( new LaravelDeployFailed( $this->client, $error ) );
+            event( new LaravelDeployFailed( $this->client, $this->process->getOutput() ) );
         }
 
     }

@@ -74,6 +74,6 @@ class ClientsController extends BaseController
     {
         $client->changeAutoDeploy();
 
-        return response()->json( 'success' );
+        return response()->json( compact( $client ) );
     }
 }

@@ -2,7 +2,9 @@
 
   <b-nav tabs
          vertical>
-    <b-nav-item :to="{name: 'settings-deployments', props: { settings, clients } }">Deployments</b-nav-item>
+    <b-nav-item v-if="clients.length > 0"
+                :to="{name: 'settings-deployments' }">Deployments
+    </b-nav-item>
   </b-nav>
 </template>
 

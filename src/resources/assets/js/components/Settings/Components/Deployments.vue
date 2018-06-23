@@ -16,16 +16,10 @@
         </h2>
       </template>
 
-      <p class="card-text">Here you can view last deployment log, all deployment logs. Also you can enable or disable
-                           quick deploy.</p>
+      <p class="card-text">Here you can view last deployment log, all deployment logs, manually deploy for each
+                           client, etc.</p>
 
       <template slot="footer">
-
-        <b-btn variant="outline-success"
-               class="float-left"
-               v-b-modal.changeQuickDeployModal>
-          Edit quick deploy per client
-        </b-btn>
 
         <b-btn variant="link"
                @click="lastLog()"
@@ -85,58 +79,36 @@
            style="padding: 30px 10px; white-space: pre-wrap; background-color: #e0e0e0;"></pre>
     </b-modal>
 
-    <b-modal ref="changeQuickDeployModal"
-             id="changeQuickDeployModal"
-             size="xs"
-             hide-footer
-             :title="trans.get('laravel-deploy.settings.deployments.quick_deploy.modal.title')">
-
-      <b-form @submit.prevent="changeQuickDeploy()">
-
-        <b-form-group :label="trans.get('laravel-deploy.settings.deployments.quick_deploy.modal.labels.client')">
-
-          <b-select :options="clients"
-                    :text-field="'name'"
-                    v-model="quick_deploy_client"
-                    :value-field="'id'">
-
-          </b-select>
-        </b-form-group>
-
-        <b-form-group>
-
-          <b-btn variant="primary"
-                 type="submit">Change
-          </b-btn>
-        </b-form-group>
-
-      </b-form>
-    </b-modal>
+    <!-- Deployment scripts section -->
+    <deployment-scripts class="mt-5"
+                        :clients="clients"></deployment-scripts>
   </div>
 </template>
 
 <script>
+    import DeploymentScripts from './DeploymentScripts';
+
     export default {
-        name:    'settings-deployments',
+        components: { DeploymentScripts },
+        name:       'settings-deployments',
         data() {
 
             return {
 
-                urls:                {
+                urls:          {
 
                     deploy_now:          window.Laravel.urls.ajax.settings.deployments.deploy_now,
                     change_quick_deploy: window.Laravel.urls.ajax.clients.auto_deploy,
                     index:               window.Laravel.urls.ajax.settings.index,
                     last_log:            window.Laravel.urls.ajax.settings.last_log,
                 },
-                deploy_client:       null,
-                quick_deploy_client: null,
-                settings:            {},
-                clients:             [],
-                last_log:            null,
+                deploy_client: null,
+                settings:      {},
+                clients:       [],
+                last_log:      null,
             };
         },
-        methods: {
+        methods:    {
 
             deployNow() {
 
@@ -163,34 +135,12 @@
                     this.$refs.deployNowClient.hide();
                 } );
             },
-            changeQuickDeploy() {
-
-                let url = this.urls.change_quick_deploy.replace( 0, this.quick_deploy_client );
-                this.$http.post( url ).then( response => {
-
-                    this.$toasted.show( this.trans.get( 'laravel-deploy.settings.deployments.http.change_quick_deploy.success' ), {
-
-                        duration: 3000,
-                        type:     'info',
-                    } );
-
-                    this.quick_deploy_client = null;
-                    this.$refs.changeQuickDeployModal.hide();
-                }, response => {
-
-                    this.$toasted.show( this.trans.get( 'laravel-deploy.settings.deployments.http.change_quick_deploy.error' ), {
-
-                        duration: 3000,
-                        type:     'error',
-                    } );
-                } );
-            },
             init() {
 
                 this.$http.get( this.urls.index ).then( response => {
 
-                    this.settings = response.data.settings;
                     this.clients = response.data.clients;
+                    this.settings = response.data.settings;
                 } );
             },
             lastLog() {
@@ -204,7 +154,7 @@
                 ];
                 this.$http.get( this.urls.last_log ).then( response => {
 
-                    response.data.log.date = new Date( response.data.log.date.date ).toDateString();
+                    response.data.log.date = new Date( response.data.log.date.date ).format( 'Y-m-d H:s:i' );
 
                     let level = response.data.log.level;
                     if ( error_class.includes( level ) ) {
@@ -239,6 +189,7 @@
         },
         mounted() {
 
+            console.log( this.trans.get( 'laravel-deploy.navbar.clients' ) );
             this.init();
         }
     };

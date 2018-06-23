@@ -46,5 +46,28 @@ return [
                 'title'  => 'Choose Client to Set Quick Deploy',
             ],
         ],
+
+        'scripts' => [
+
+            'card'                => [
+
+                'header'              => 'Deployments Scripts',
+                'text'                => 'Here you can view and/or modify deployment scripts for each client. Please select the client.',
+                'select_client_label' => 'Select client',
+            ],
+            'client_script_modal' => [
+
+                'title' => 'Edit deploy script',
+                'form'  => [
+
+                    'labels'        => [
+
+                        'script_input' => 'Deploy Script',
+                    ],
+                    'submit_button' => 'Save',
+                ],
+            ],
+
+        ],
     ],
 ];

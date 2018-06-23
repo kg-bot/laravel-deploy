@@ -37,7 +37,7 @@ Route::group( [
 Route::group( [
 
     'prefix'     => config( 'laravel-deploy.routes.prefix' ) . '/ajax',
-    'middleware' => array_merge( [ 'web' ], config( 'laravel-deploy.front.routes.ajax.middleware' ) ),
+    'middleware' => array_merge( [ 'web', 'auth' ], config( 'laravel-deploy.front.routes.ajax.middleware' ) ),
     'namespace'  => config( 'laravel-deploy.front.routes.ajax.namespace' ),
 ], function () {
 
@@ -71,7 +71,20 @@ Route::group( [
         /**
          * Deployments routes
          */
-        Route::post( 'deploy/now/{client}', 'SettingsController@deployNow' )
-             ->name( 'laravel-deploy.ajax.settings.deployments.deploy_now' );
+        Route::group( [ 'prefix' => 'deployments' ], function () {
+
+            Route::post( 'deploy/now/{client}', 'SettingsController@deployNow' )
+                 ->name( 'laravel-deploy.ajax.settings.deployments.deploy_now' );
+
+            /**
+             * Deployment script routes
+             */
+            Route::get( 'scripts/{client}', 'ClientScriptController@fetch' )
+                 ->name( 'laravel-deploy.ajax.settings.deployments.scripts.fetch' );
+
+            Route::post( 'scripts/{client}', 'ClientScriptController@save' )
+                 ->name( 'laravel-deploy.ajax.settings.deployments.scripts.save' );
+        } );
+
     } );
 } );

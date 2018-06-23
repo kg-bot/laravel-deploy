@@ -80,6 +80,11 @@
                     deployments: {
 
                         deploy_now: "{{ route('laravel-deploy.ajax.settings.deployments.deploy_now', 0) }}",
+                        scripts:    {
+
+                            fetch: "{{ route('laravel-deploy.ajax.settings.deployments.scripts.fetch', 0) }}",
+                            save:  "{{ route('laravel-deploy.ajax.settings.deployments.scripts.save', 0) }}",
+                        },
                     },
                 },
             },

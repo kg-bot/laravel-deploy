@@ -5,7 +5,8 @@
     "php": ">=7.1",
     "ddtraceweb/monolog-parser": "^1.2",
     "kg-bot/laravel-localization-to-vue": "1.*",
-    "laravel/framework": "5.*"
+    "laravel/framework": "5.*",
+    "predis/predis": "^1.1"
   },
   "keywords": [
     "laravel",
