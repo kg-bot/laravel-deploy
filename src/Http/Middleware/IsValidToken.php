@@ -3,16 +3,15 @@
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/4/18
- * Time: 12:25 AM
+ * Time: 12:25 AM.
  */
 
 namespace KgBot\LaravelDeploy\Http\Middleware;
 
 use Closure;
-use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
-use KgBot\LaravelDeploy\Exceptions\InvalidClientException;
 use KgBot\LaravelDeploy\Models\Client;
-
+use KgBot\LaravelDeploy\Exceptions\InvalidClientException;
+use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 
 class IsValidToken extends Middleware
 {
@@ -24,24 +23,22 @@ class IsValidToken extends Middleware
      *
      * @return mixed
      */
-    public function handle( $request, Closure $next )
+    public function handle($request, Closure $next)
     {
-        $token = $request->get( '_token' );
+        $token = $request->get('_token');
 
-        if ( $token ) {
+        if ($token) {
+            $client = Client::where([
 
-            $client = Client::where( [
+                ['token', $token],
+                ['active', true],
+            ])->first();
 
-                [ 'token', $token ],
-                [ 'active', true ],
-            ] )->first();
-
-            if ( !$client ) {
-
+            if (! $client) {
                 throw new InvalidClientException();
             }
 
-            return $next( $request );
+            return $next($request);
         }
     }
 }

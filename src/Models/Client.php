@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/4/18
- * Time: 12:29 AM
+ * Time: 12:29 AM.
  */
 
 namespace KgBot\LaravelDeploy\Models;
-
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,29 +30,29 @@ class Client extends Model
         'auto_deploy' => 'boolean',
     ];
 
-    public function setTokenAttribute( $value )
+    public function setTokenAttribute($value)
     {
-        $this->attributes[ 'token' ] = bcrypt( $value );
+        $this->attributes['token'] = bcrypt($value);
     }
 
     public function changeStatus()
     {
-        $this->update( [
+        $this->update([
 
-            'active' => !$this->active,
-        ] );
+            'active' => ! $this->active,
+        ]);
     }
 
     public function changeAutoDeploy()
     {
-        $this->update( [
+        $this->update([
 
-            'auto_deploy' => !$this->auto_deploy,
-        ] );
+            'auto_deploy' => ! $this->auto_deploy,
+        ]);
     }
 
     public function scopeActive()
     {
-        return $this->where( 'active', true );
+        return $this->where('active', true);
     }
 }
