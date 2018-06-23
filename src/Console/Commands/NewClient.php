@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/4/18
- * Time: 1:29 AM
+ * Time: 1:29 AM.
  */
 
 namespace KgBot\LaravelDeploy\Console\Commands;
-
 
 use Illuminate\Console\Command;
 use KgBot\LaravelDeploy\Models\Client;
@@ -45,14 +44,13 @@ class NewClient extends Command
      */
     public function handle()
     {
+        $name = $this->argument('name');
+        $token = $this->argument('token');
+        $script_source = $this->argument('script_source');
+        $source = $this->argument('source');
 
-        $name          = $this->argument( 'name' );
-        $token         = $this->argument( 'token' );
-        $script_source = $this->argument( 'script_source' );
-        $source        = $this->argument( 'source' );
+        $client = Client::create(compact('name', 'token', 'script_source', 'source'));
 
-        $client = Client::create( compact( 'name', 'token', 'script_source', 'source' ) );
-
-        $this->info( 'New client created, token has been encrypted and it is: ' . $token );
+        $this->info('New client created, token has been encrypted and it is: '.$token);
     }
 }

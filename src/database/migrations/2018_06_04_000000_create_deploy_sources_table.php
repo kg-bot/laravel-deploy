@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/4/18
- * Time: 1:24 AM
+ * Time: 1:24 AM.
  */
 class CreateDeploySourcesTable extends Migration
 {
@@ -19,16 +19,16 @@ class CreateDeploySourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create( 'deploy_sources', function ( Blueprint $table ) {
-            $table->increments( 'id' );
+        Schema::create('deploy_sources', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
 
-            $table->string( 'source' );
-            $table->boolean( 'active' )->default( true );
-            $table->string( 'token', 512 )->unique();
-            $table->string( 'name' );
-            $table->string( 'script_source' );
-        } );
+            $table->string('source');
+            $table->boolean('active')->default(true);
+            $table->string('token', 512)->unique();
+            $table->string('name');
+            $table->string('script_source');
+        });
     }
 
     /**
@@ -38,6 +38,6 @@ class CreateDeploySourcesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists( 'deploy_sources' );
+        Schema::dropIfExists('deploy_sources');
     }
 }

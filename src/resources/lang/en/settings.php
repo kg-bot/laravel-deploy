@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/10/18
- * Time: 11:03 PM
+ * Time: 11:03 PM.
  */
 
 return [

@@ -3,17 +3,16 @@
  * Created by PhpStorm.
  * User: kgbot
  * Date: 6/4/18
- * Time: 1:18 AM
+ * Time: 1:18 AM.
  */
 
 namespace KgBot\LaravelDeploy\Events;
 
-
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use KgBot\LaravelDeploy\Models\Client;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class LaravelDeployFinished
 {
@@ -27,9 +26,9 @@ class LaravelDeployFinished
      *
      * @return void
      */
-    public function __construct( Client $client, $message )
+    public function __construct(Client $client, $message)
     {
-        $this->client  = $client;
+        $this->client = $client;
         $this->message = $message;
     }
 
@@ -40,6 +39,6 @@ class LaravelDeployFinished
      */
     public function broadcastOn()
     {
-        return new PrivateChannel( config( 'laravel-deploy.events.channel', 'channel-name' ) );
+        return new PrivateChannel(config('laravel-deploy.events.channel', 'channel-name'));
     }
 }

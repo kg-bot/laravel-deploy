@@ -2,9 +2,9 @@
 
 namespace KgBot\LaravelDeploy\Http\Controllers\Front\Ajax;
 
+use KgBot\LaravelDeploy\Models\Client;
 use KgBot\LaravelDeploy\Http\Controllers\BaseController;
 use KgBot\LaravelDeploy\Http\Requests\Clients\ClientRequest;
-use KgBot\LaravelDeploy\Models\Client;
 
 class ClientsController extends BaseController
 {
@@ -17,7 +17,7 @@ class ClientsController extends BaseController
     {
         $clients = Client::all();
 
-        return response()->json( compact( 'clients' ) );
+        return response()->json(compact('clients'));
     }
 
     /**
@@ -27,11 +27,11 @@ class ClientsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function store( ClientRequest $request )
+    public function store(ClientRequest $request)
     {
-        $client = Client::create( $request->all() );
+        $client = Client::create($request->all());
 
-        return response()->json( compact( 'client' ) );
+        return response()->json(compact('client'));
     }
 
     /**
@@ -42,11 +42,11 @@ class ClientsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function update( ClientRequest $request, Client $client )
+    public function update(ClientRequest $request, Client $client)
     {
-        $client->update( $request->all() );
+        $client->update($request->all());
 
-        return response()->json( compact( 'client' ) );
+        return response()->json(compact('client'));
     }
 
     /**
@@ -56,24 +56,24 @@ class ClientsController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy( Client $client )
+    public function destroy(Client $client)
     {
         $client->delete();
 
-        return response()->json( 'success' );
+        return response()->json('success');
     }
 
-    public function changeStatus( Client $client )
+    public function changeStatus(Client $client)
     {
         $client->changeStatus();
 
-        return response()->json( 'success' );
+        return response()->json('success');
     }
 
-    public function changeAutoDeploy( Client $client )
+    public function changeAutoDeploy(Client $client)
     {
         $client->changeAutoDeploy();
 
-        return response()->json( 'success' );
+        return response()->json('success');
     }
 }
